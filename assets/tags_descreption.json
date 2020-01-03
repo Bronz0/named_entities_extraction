@@ -1,0 +1,46 @@
+[
+    {
+        "tag": "PERSON",
+        "descreption": "this tag reffer to a physical person."
+    },
+    {
+        "tag": "ORG",
+        "descreption": "this tag reffer to an organisation name like a company name or a university."
+    },
+    {
+        "tag": "DATE",
+        "descreption": "this tag reffer to a date like month or a year or a day."
+    },
+    {
+        "tag": "OLOC",
+        "descreption": "this tag is attached to an organisation like a clue to know that the following tag is an organisation name not a PERSON name."
+    },
+    {
+        "tag": "LCLUE",
+        "descreption": "this tag is attached to a location like a clue to know that the following tag is a location name not a PERSON name."
+    },
+    {
+        "tag": "PCLUE",
+        "descreption": "this tag is attached to a person position or job like a clue to know that the following tag is the name of the  PERSON that's hold that position."
+    },
+    {
+        "tag": "DCLUE",
+        "descreption": "this tag is attached to a date like a clue"
+    },
+    {
+        "tag": "OTHER",
+        "descreption": "other thing then a Named entite"
+    },
+    {
+        "tag": "PREP",
+        "descreption": "preposition"
+    },
+    {
+        "tag": "DEF",
+        "descreption": "a definition like the or a or an in english"
+    },
+    {
+        "tag": "CONJ",
+        "descreption": "a conjonction"
+    }
+]
