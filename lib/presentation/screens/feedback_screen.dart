@@ -78,8 +78,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                           child: InkWell(
                             onTap: () {
                               FocusScope.of(context).requestFocus(FocusNode());
-                              _controller.text = '';
                               _launchURL();
+                              _controller.text = '';
                             },
                             child: Center(
                               child: Padding(

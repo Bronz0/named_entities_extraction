@@ -189,7 +189,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                               ),
                             ),
                           ),
-                          content: Text('Do You Really Want To Quit ?'),
+                          content: Text('Do You Really Want To Exit ?'),
                           actions: <Widget>[
                             new FlatButton(
                               onPressed: () => Navigator.of(context).pop(false),

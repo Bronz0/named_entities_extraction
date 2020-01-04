@@ -102,7 +102,7 @@ class _HelpScreenState extends State<HelpScreen> {
 
   _launchURL() async {
     const url =
-        'mailto:hassaine24@gmail.com?subject=NEX APP User Needs Help&body=help';
+        'mailto:hassaine24@gmail.com?subject=NEX APP User Needs Help&body=I need some help with your app';
     if (await canLaunch(url)) {
       await launch(url);
     } else {

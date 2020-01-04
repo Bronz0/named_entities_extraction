@@ -26,7 +26,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
           ),
         ),
         loaderColor: Colors.red,
-        loadingText: Text("made by Bronzo v0.0.1"),
+        loadingText: Text("v0.0.1"),
       ),
     );
   }

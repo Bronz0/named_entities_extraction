@@ -1,7 +1,9 @@
-import 'package:named_entities_extraction/entities/tagged_entity.dart';
-import 'package:named_entities_extraction/presentation/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:named_entities_extraction/bloc/bloc.dart';
+
+import '../../entities/tagged_entity.dart';
+import '../theme/app_theme.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key key}) : super(key: key);
@@ -13,21 +15,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   AnimationController animationController;
   List<TaggedEntity> taggedEntities;
-  final List<String> tags = [
-    'PERSON',
-    'ORG',
-    'DATE',
-    'OLOC',
-    'LCLUE',
-    'PCLUE',
-    'DCLUE',
-    'OTHER',
-    'PREP',
-    'DEF',
-    'CONJ'
-  ];
-  final Random rand = new Random();
+
   TextEditingController _controller = new TextEditingController();
+  NexBloc _nexBloc = new NexBloc();
 
   @override
   void initState() {
@@ -36,7 +26,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     super.initState();
   }
 
-  // you can use this function to get data.
+  // you can use this function to getData or to do things before building the UI
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 0));
     return true;
@@ -65,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   appBar(),
-                  body(),
+                  body(context),
                 ],
               ),
             );
@@ -154,17 +144,20 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   child: InkWell(
                     onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
-                      setState(() {
-                        if (_controller.text != null) {
-                          print(_controller.text);
-                          List<String> splitedText =
-                              _splitText(_controller.text);
-                          taggedEntities = tagEntities(splitedText);
-                          _controller.text = "";
-                        } else {
-                          print('the text controller returned null');
-                        }
-                      });
+                      // setState(() {
+                      //   if (_controller.text != null) {
+                      //     print(_controller.text);
+                      //     List<String> splitedText =
+                      //         _splitText(_controller.text);
+                      //     taggedEntities = tagEntities(splitedText);
+                      //     _controller.text = "";
+                      //   } else {
+                      //     print('the text controller returned null');
+                      //   }
+                      // });
+
+                      _nexBloc.add(GetDataFromLocal(text: _controller.text));
+                      print('added!');
                     },
                     child: Center(
                       child: Padding(
@@ -237,7 +230,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _showResults() {
+  Widget _showResults(data) {
+    taggedEntities = data;
     if (taggedEntities == null) {
       return Container();
     } else {
@@ -276,28 +270,37 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget body() {
-    return Expanded(
-      child: ListView(
-        children: <Widget>[
-          topBody(context),
-          _showResults(),
-        ],
+  BlocProvider<NexBloc> body(BuildContext context) {
+    return BlocProvider<NexBloc>(
+      create: (context) => _nexBloc,
+      child: Expanded(
+        child: ListView(
+          children: <Widget>[
+            topBody(context),
+            BlocBuilder<NexBloc, NexState>(
+              builder: (context, state) {
+                if (state is Empty) {
+                  return Center(
+                    child: Text('No Data!'),
+                  );
+                } else if (state is Loading) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state is Loaded) {
+                  return _showResults(state.data);
+                } else if (state is Error) {
+                  return Center(
+                    child: Text('Error !'),
+                  );
+                } else {
+                  return Center(child: Text('Tyaaaret!'));
+                }
+              },
+            )
+          ],
+        ),
       ),
     );
-  }
-
-  List<String> _splitText(String text) {
-    return text.split(" ");
-  }
-
-  List<TaggedEntity> tagEntities(List<String> entities) {
-    List<TaggedEntity> _taggedEntities = new List<TaggedEntity>();
-    for (var entity in entities) {
-      if (entity != '' && entity != ' ' && entity != null && entity != '\n') {
-        _taggedEntities.add(new TaggedEntity(entity, tags[rand.nextInt(11)]));
-      }
-    }
-    return _taggedEntities;
   }
 }

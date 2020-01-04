@@ -90,9 +90,6 @@ class _TagsScreenState extends State<TagsScreen> {
     for (int i = 0; i < result.length; i++) {
       tags.add(new Tag(result[i]["tag"], result[i]["descreption"]));
     }
-    for (var tag in tags) {
-      print(tag.tag);
-    }
     _tags = tags;
     if (_tagsForDisplay.isEmpty) {
       _tagsForDisplay = tags;
@@ -134,12 +131,10 @@ class _TagsScreenState extends State<TagsScreen> {
                       hintText: 'Search...',
                     ),
                     onChanged: (text) {
-                      print('onChaged!');
                       text = text.toLowerCase();
                       setState(() {
                         _tagsForDisplay = _tags.where((tag) {
                           var t = tag.tag.toLowerCase();
-                          print(t);
                           return t.contains(text);
                         }).toList();
                       });
