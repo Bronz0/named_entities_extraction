@@ -22,7 +22,7 @@ class NexBloc extends Bloc<NexEvent, NexState> {
       if (response.statusCode == 200) {
         // if we get a successful response from the sever we return Loaded sate
         // var data = await json.decode(response.body);
-        // print(response);
+        
         // yield Loaded(data: response);
       } else {
         // else we return Error state
